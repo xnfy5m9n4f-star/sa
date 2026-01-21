@@ -1,0 +1,46 @@
+name: Sync Supabase to CSV
+
+on:
+  # schedule:
+    # Executa a cada 15 minutos
+    # - cron: '*/15 * * * *'
+  workflow_dispatch:  # Permite execução manual
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Permite fazer commit e push
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        pip install supabase pandas
+    
+    - name: Run sync script
+      env:
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        SUPABASE_TABELA_LOG: ${{ secrets.SUPABASE_TABELA_LOG }}
+      run: |
+        python ExtraçãoSupabase.py
+    
+    - name: Commit and push if changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add dados_supabase.csv
+        if git diff --staged --quiet; then
+          echo "Nenhuma mudança para commitar."
+        else
+          git commit -m "Atualização automática: $(date +'%Y-%m-%d %H:%M:%S')"
+          git push
+        fi
