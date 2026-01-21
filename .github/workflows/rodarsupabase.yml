@@ -31,7 +31,7 @@ jobs:
         SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
         SUPABASE_TABELA_LOG: ${{ secrets.SUPABASE_TABELA_LOG }}
       run: |
-        python ExtraçãoSupabase.py
+        python extract.py
     
     - name: Commit and push if changes
       run: |
