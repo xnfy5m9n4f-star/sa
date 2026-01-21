@@ -1,9 +1,9 @@
 name: Sync Supabase to CSV
 
 on:
-  # schedule:
+  schedule:
     # Executa a cada 15 minutos
-    # - cron: '*/15 * * * *'
+    - cron: '*/15 * * * *'
   workflow_dispatch:  # Permite execução manual
 
 jobs:
