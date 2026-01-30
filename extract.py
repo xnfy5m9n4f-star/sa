@@ -90,7 +90,7 @@ def carregar_dados_supabase(client, incluir_removidas: bool = True):
             break
 
         for registro in resp.data:
-            chave_id = registro.get("CHAVE_NF") or str(registro)
+            chave_id = registro.get("CHAVE_NF", "OF") or str(registro)
             if chave_id not in seen_keys:
                 seen_keys.add(chave_id)
                 all_data.append(registro)
